@@ -684,7 +684,25 @@ $.extend( $.validator, {
 		},
 
 		clean: function( selector ) {
-			return $( selector )[ 0 ];
+
+			// If a jQuery object is passed, use its first element directly.
+			if ( selector && selector.jquery ) {
+				return selector[ 0 ];
+			}
+
+			// If a DOM element or window is passed, return it as-is.
+			if ( selector && ( selector.nodeType || selector === selector.window ) ) {
+				return selector;
+			}
+
+			// If a string is passed, treat it strictly as a selector, not HTML.
+			if ( typeof selector === "string" ) {
+				var context = this.currentForm || document;
+				return $( context ).find( selector )[ 0 ];
+			}
+
+			// For all other cases, return undefined.
+			return undefined;
 		},
 
 		errors: function() {
