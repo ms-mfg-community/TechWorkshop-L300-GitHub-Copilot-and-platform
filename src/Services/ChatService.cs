@@ -54,12 +54,15 @@ namespace ZavaStorefront.Services
                 var json = JsonSerializer.Serialize(requestBody);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                _httpClient.DefaultRequestHeaders.Clear();
-                _httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
+                var request = new HttpRequestMessage(HttpMethod.Post, url)
+                {
+                    Content = content
+                };
+                request.Headers.Add("api-key", apiKey);
 
                 _logger.LogInformation("Sending message to Foundry Phi-4 endpoint: {Url}", url);
 
-                var response = await _httpClient.PostAsync(url, content);
+                var response = await _httpClient.SendAsync(request);
                 var responseContent = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)

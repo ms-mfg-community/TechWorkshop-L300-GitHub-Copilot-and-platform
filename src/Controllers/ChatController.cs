@@ -22,6 +22,7 @@ namespace ZavaStorefront.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendMessage(string message)
         {
             if (string.IsNullOrWhiteSpace(message))
@@ -29,7 +30,7 @@ namespace ZavaStorefront.Controllers
                 return Json(new { success = false, error = "Message cannot be empty" });
             }
 
-            _logger.LogInformation("Sending chat message: {Message}", message);
+            _logger.LogInformation("Sending chat message with length: {MessageLength}", message.Length);
 
             var response = await _chatService.SendMessageAsync(message);
 

@@ -20,6 +20,7 @@
                 </div>
                 
                 <form id="chatForm">
+                    @Html.AntiForgeryToken()
                     <div class="input-group">
                         <input type="text" 
                                id="messageInput" 
@@ -120,7 +121,10 @@
                 $.ajax({
                     url: '@Url.Action("SendMessage", "Chat")',
                     type: 'POST',
-                    data: { message: message },
+                    data: { 
+                        message: message,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
                     success: function(data) {
                         setLoading(false);
                         
