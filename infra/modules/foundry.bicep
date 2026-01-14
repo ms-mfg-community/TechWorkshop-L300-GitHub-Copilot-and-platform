@@ -30,3 +30,4 @@ resource foundry 'Microsoft.CognitiveServices/accounts@2025-06-01' = {
 
 output name string = foundry.name
 output id string = foundry.id
+output endpoint string = foundry.properties.endpoint
