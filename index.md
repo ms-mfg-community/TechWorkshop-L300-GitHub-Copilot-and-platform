@@ -4,7 +4,7 @@ layout: home
 nav_order: 1
 ---
 
-# TechWorkshop L300: GitHub - Innovate with GitHub
+# TechWorkshop L300: GitHub - Innovate with GitHub 
 
 This lab guides you through a series of practical exercises for using GitHub Enterprise, GitHub Advanced Security and GitHub Copilot features. Scenarios will be based on the development of Zava's storefront application, creating issues and developing new features with Copilot and improving security posture of the application with Advanced Security features such as Dependabot, Secret Protection and Code Security. Exercises will also leverage Azure Copilot and Azure MCP Server to generate Bicep scripts to deploy Azure infrastructure, and ultimately deploy the application. Each exercise is designed to deliver hands-on experience in governance, automation, security, AI integration, and observability, ensuring Zava’s transition to Azure is robust, secure, and future-ready.
 

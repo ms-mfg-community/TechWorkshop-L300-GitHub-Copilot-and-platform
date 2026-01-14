@@ -1,0 +1,22 @@
+name: zavastorefront
+metadata:
+  template: custom
+infra:
+  provider: bicep
+  path: infra
+  module: main
+services:
+  web:
+    project: ./src
+    language: dotnet
+    host: appservice
+
+hooks:
+  postdeploy:
+    shell: pwsh
+    run: ./infra/deploy-container.ps1
+
+# Notes:
+# - Provisioning will use Bicep in ./infra (see infra/README.md).
+# - Deployment should build/push an image to ACR (prefer `az acr build`) then update the Web App container image.
+# - This file is scaffolded only; no Azure commands are executed as part of this commit.

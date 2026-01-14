@@ -1,0 +1,17 @@
+<step title="Incoming Request" date="2026-01-13T21:48:27.603" instance="f07aec" url="/api/zipdeploy?isAsync=true" method="POST" type="request" pid="768,1,5" Accept="application/json" Host="app-zava-dev-nggslimn77qvo.scm.azurewebsites.net" User-Agent="azsdk-go-zip-deploy/1.0.0 (go1.25.0 X:loopvar; Windows_NT),azdev/1.22.5 (Go go1.25.0 X:loopvar; windows/amd64)" Accept-Encoding="gzip" Authorization="Bea..." Content-Type="application/octet-stream" Content-Length="1765777" X-Ms-Correlation-Request-Id="38854da9f8735f339e296b90894f3e34" X-ARR-LOG-ID="38854da9-f873-5f33-9e29-6b90894f3e34" CLIENT-IP="20.97.10.99:16642" X-SITE-DEPLOYMENT-ID="app-zava-dev-nggslimn77qvo" WAS-DEFAULT-HOSTNAME="app-zava-dev-nggslimn77qvo.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/zipdeploy?isAsync=true" X-Client-IP="20.97.10.99" X-Client-Port="16642" >
+  <step title="ZipPushDeploy" date="2026-01-13T21:48:28.132" >
+    <step title="ZipDeploy. Extract zip." date="2026-01-13T21:48:28.140" /><!-- duration: 5ms -->
+    <step title="None repository commit" date="2026-01-13T21:48:28.151" >
+      <step title="Commit id: fc6eb47d-f5d4-4992-9eb7-81639529e3d4" date="2026-01-13T21:48:28.155" Message="N/A" AuthorName="N/A" AuthorEmail="N/A" /><!-- duration: 4ms -->
+    </step><!-- duration: 11ms -->
+    <step title="Starting PushDeployAsync" date="2026-01-13T21:48:28.166" /><!-- duration: 4ms -->
+    <step title="Writing artifact to /tmp/zipdeploy/35c33a74-8abe-4089-92c9-7c32e157e91f.zip" date="2026-01-13T21:48:28.182" >
+      <step title="Writing multipart request body to /tmp/zipdeploy/35c33a74-8abe-4089-92c9-7c32e157e91f.zip" date="2026-01-13T21:48:28.186" /><!-- duration: 4ms -->
+    </step><!-- duration: 90ms -->
+    <step title="Start deployment in the background" date="2026-01-13T21:48:28.283" >
+      <step title="Acquiring Deployment Lock" date="2026-01-13T21:48:28.309" /><!-- duration: 4ms -->
+      <step title="Acquired Deployment Lock" date="2026-01-13T21:48:28.343" /><!-- duration: 4ms -->
+    </step><!-- duration: 151ms -->
+  </step><!-- duration: 309ms -->
+  <step title="Outgoing response" date="2026-01-13T21:48:28.457" type="response" statusCode="202" statusText="Accepted" /><!-- duration: 4ms -->
+</step><!-- duration: 862ms -->

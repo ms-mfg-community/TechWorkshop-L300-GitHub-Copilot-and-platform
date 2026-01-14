@@ -1,0 +1,110 @@
+name: Build and deploy container to App Service
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - production
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'src/Dockerfile'
+      - '**/Dockerfile'
+      - '.dockerignore'
+      - '**/.dockerignore'
+      - 'docker-compose*.yml'
+      - '**/docker-compose*.yml'
+      - 'infra/deploy-container.ps1'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'src/Dockerfile'
+      - '**/Dockerfile'
+      - '.dockerignore'
+      - '**/.dockerignore'
+      - 'docker-compose*.yml'
+      - '**/docker-compose*.yml'
+      - 'infra/deploy-container.ps1'
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  IMAGE_REPO: zavastorefront
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'dev' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve image tag
+        id: vars
+        shell: bash
+        run: |
+          echo "IMAGE_TAG=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "STABLE_TAG=${{ inputs.environment || 'dev' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Build in ACR (cloud build, no local Docker)
+        shell: bash
+        env:
+          ACR_NAME: ${{ vars.ACR_NAME }}
+        run: |
+          test -n "$ACR_NAME" || (echo "Missing vars.ACR_NAME" && exit 1)
+
+          az acr build \
+            -r "$ACR_NAME" \
+            -t "${IMAGE_REPO}:${{ steps.vars.outputs.IMAGE_TAG }}" \
+            -t "${IMAGE_REPO}:${{ steps.vars.outputs.STABLE_TAG }}" \
+            -f "./src/Dockerfile" \
+            "./src"
+
+      - name: Deploy to App Service (Web App for Containers)
+        shell: bash
+        env:
+          RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+          WEBAPP_NAME: ${{ vars.WEBAPP_NAME }}
+          ACR_NAME: ${{ vars.ACR_NAME }}
+        run: |
+          test -n "$RESOURCE_GROUP" || (echo "Missing vars.AZURE_RESOURCE_GROUP" && exit 1)
+          test -n "$WEBAPP_NAME" || (echo "Missing vars.WEBAPP_NAME" && exit 1)
+          test -n "$ACR_NAME" || (echo "Missing vars.ACR_NAME" && exit 1)
+
+          ACR_LOGIN_SERVER=$(az acr show -n "$ACR_NAME" --query loginServer -o tsv)
+          FULL_IMAGE="${ACR_LOGIN_SERVER}/${IMAGE_REPO}:${{ steps.vars.outputs.IMAGE_TAG }}"
+
+          az webapp config container set \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$WEBAPP_NAME" \
+            --docker-custom-image-name "$FULL_IMAGE" \
+            --docker-registry-server-url "https://${ACR_LOGIN_SERVER}"
+
+          # Keep app settings consistent with the Dockerfile (listening on 8080)
+          az webapp config appsettings set \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$WEBAPP_NAME" \
+            --settings WEBSITES_PORT=8080
+
+          az webapp restart --resource-group "$RESOURCE_GROUP" --name "$WEBAPP_NAME"
