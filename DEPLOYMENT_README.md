@@ -4,8 +4,8 @@ This repo provisions a **Linux Web App for Containers** + **Azure Container Regi
 The workflow in `.github/workflows/deploy-appservice-container.yml` builds the container from `src/Dockerfile` (via `az acr build`) and deploys it to the Web App.
 
 Deploy behavior:
-- Pull requests into `main`: build only (no deploy)
-- Pushes to `main`: build, then deploy **only if `src/**` changed**
+- Pull requests into `main`: build + deploy (requires repo-level secrets/variables to be available to the run)
+- Pushes to `main`: build + deploy
 - Manual runs (`workflow_dispatch`): build + deploy
 
 ## 1) Configure GitHub Secrets (Azure login)

@@ -7,4 +7,4 @@ param acrSku = 'Basic'
 param appServiceSkuName = 'B1'
 param imageName = 'zavastorefront'
 param imageTag = 'dev'
-param enableAi = false
+param enableAi = true
