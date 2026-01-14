@@ -4,29 +4,29 @@ param name string
 @description('Location')
 param location string
 
-@description('Optional resource id of an existing Application Insights (for ML workspace diagnostics)')
-param applicationInsightsId string = ''
-
 var requiredTags = {
   CostControl: 'Ignore'
   SecurityControl: 'Ignore'
 }
 
-resource workspace 'Microsoft.MachineLearningServices/workspaces@2024-04-01' = {
+@description('SKU name for the Foundry resource (commonly S0)')
+param skuName string = 'S0'
+
+resource foundry 'Microsoft.CognitiveServices/accounts@2025-06-01' = {
   name: name
   location: location
+  kind: 'AIServices'
   tags: union(resourceGroup().tags ?? {}, requiredTags)
+  sku: {
+    name: skuName
+  }
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
-    friendlyName: name
-    description: 'Dev AI/Foundry workspace scaffold'
-    applicationInsights: empty(applicationInsightsId) ? null : applicationInsightsId
-    allowPublicAccessWhenBehindVnet: false
-    publicNetworkAccess: 'Enabled'
+    // Keep minimal; additional configuration (networking, custom subdomain, projects) can be added later.
   }
 }
 
-output name string = workspace.name
-output id string = workspace.id
+output name string = foundry.name
+output id string = foundry.id
