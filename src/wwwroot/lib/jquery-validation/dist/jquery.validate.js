@@ -684,6 +684,24 @@ $.extend( $.validator, {
 		},
 
 		clean: function( selector ) {
+
+			// If a jQuery object is passed, return its first DOM element
+			if ( selector && selector.jquery ) {
+				return selector[ 0 ] || null;
+			}
+
+			// If a DOM element is passed, return it directly
+			if ( selector && selector.nodeType === 1 ) {
+				return selector;
+			}
+
+			// Fallback: if a selector string or other value is passed,
+			// resolve it only within the current form context to avoid
+			// interpreting it as HTML.
+			if ( this.currentForm ) {
+				return $( this.currentForm ).find( selector )[ 0 ] || null;
+			}
+
 			return $( selector )[ 0 ];
 		},
 
@@ -1068,7 +1086,17 @@ $.extend( $.validator, {
 				element = this.findByName( element.name );
 			}
 
-			// Always apply ignore filter
+			// Normalize to a single DOM element
+			if ( element && element.jquery ) {
+				element = element[ 0 ];
+			}
+
+			// If we still don't have a DOM element, abort
+			if ( !element || element.nodeType !== 1 ) {
+				return undefined;
+			}
+
+			// Always apply ignore filter on a safe element reference
 			return $( element ).not( this.settings.ignore )[ 0 ];
 		},
 
