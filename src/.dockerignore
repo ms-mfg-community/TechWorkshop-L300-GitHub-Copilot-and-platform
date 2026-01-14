@@ -1,0 +1,24 @@
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/*.user
+**/*.suo
+**/*.pdb
+**/*.cache
+**/*.log
+**/TestResults
+
+# Git
+.git
+.gitignore
+
+# OS
+**/.DS_Store
+**/Thumbs.db
+
+# Docs
+**/*.md
+
+# Local tooling
+**/node_modules
