@@ -2,6 +2,16 @@ name: Build and deploy container to App Service
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - production
   push:
     branches: [ main ]
     paths:
@@ -31,11 +41,11 @@ permissions:
 
 env:
   IMAGE_REPO: zavastorefront
-  STABLE_TAG: dev
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'dev' }}
 
     steps:
       - name: Checkout
@@ -55,6 +65,7 @@ jobs:
         shell: bash
         run: |
           echo "IMAGE_TAG=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "STABLE_TAG=${{ inputs.environment || 'dev' }}" >> "$GITHUB_OUTPUT"
 
       - name: Detect app changes
         id: changes
@@ -90,7 +101,7 @@ jobs:
           az acr build \
             -r "$ACR_NAME" \
             -t "${IMAGE_REPO}:${{ steps.vars.outputs.IMAGE_TAG }}" \
-            -t "${IMAGE_REPO}:${STABLE_TAG}" \
+            -t "${IMAGE_REPO}:${{ steps.vars.outputs.STABLE_TAG }}" \
             -f "./src/Dockerfile" \
             "./src"
 
