@@ -120,7 +120,7 @@ This migration was performed following official Microsoft documentation and guid
 
 ### .NET 9 and Beyond
 
-While .NET 9 is available (released in November 2024), it is a Standard Term Support (STS) release with only 18 months of support. Organizations requiring stability and long-term support should remain on .NET 8 LTS until .NET 10 LTS is released (expected November 2025).
+While .NET 9 is available (released in November 2024), it is a Short Term Support (STS) release with only 18 months of support. Organizations requiring stability and long-term support should remain on .NET 8 LTS until .NET 10 LTS is released (expected November 2025).
 
 ### Recommended Upgrade Path
 
