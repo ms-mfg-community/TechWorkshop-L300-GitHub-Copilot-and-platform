@@ -1,0 +1,9 @@
+<step title="Incoming Request" date="2026-01-13T21:52:05.531" instance="f07aec" url="/api/deployments/latest?deployer=Push-Deployer&amp;time=2026-01-13_21-51-54Z" method="GET" type="request" pid="768,1,22" Host="app-zava-dev-nggslimn77qvo.scm.azurewebsites.net" User-Agent="azsdk-go-zip-deploy/1.0.0 (go1.25.0 X:loopvar; Windows_NT),azdev/1.22.5 (Go go1.25.0 X:loopvar; windows/amd64)" Accept-Encoding="gzip" Authorization="Bea..." X-Ms-Correlation-Request-Id="d5dd891f1a5dca0edc0c97b3d2e4d440" X-ARR-LOG-ID="d5dd891f-1a5d-ca0e-dc0c-97b3d2e4d440" CLIENT-IP="20.97.9.18:48903" X-SITE-DEPLOYMENT-ID="app-zava-dev-nggslimn77qvo" WAS-DEFAULT-HOSTNAME="app-zava-dev-nggslimn77qvo.scm.azurewebsites.net" X-Forwarded-Proto="https" X-AppService-Proto="https" X-Forwarded-TlsVersion="1.3" X-WAWS-Unencoded-URL="/api/deployments/latest?deployer=Push-Deployer&amp;time=2026-01-13_21-51-54Z" X-Client-IP="20.97.9.18" X-Client-Port="48903" >
+  <step title="Cleanup Xml Logs" date="2026-01-13T21:52:05.542" /><!-- duration: 32ms -->
+  <step title="DeploymentService.GetResult" date="2026-01-13T21:52:05.623" >
+    <step title="DeploymentService.GetLatestDeployment" date="2026-01-13T21:52:05.636" >
+      <step title="DeploymentManager.GetResults" date="2026-01-13T21:52:05.651" /><!-- duration: 349ms -->
+    </step><!-- duration: 376ms -->
+  </step><!-- duration: 402ms -->
+  <step title="Outgoing response" date="2026-01-13T21:52:06.036" type="response" statusCode="202" statusText="Accepted" /><!-- duration: 21ms -->
+</step><!-- duration: 544ms -->
