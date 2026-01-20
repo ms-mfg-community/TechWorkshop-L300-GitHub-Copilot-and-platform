@@ -109,3 +109,5 @@ output acrLoginServer string = acr.outputs.loginServer
 output webAppNameOut string = webApp.outputs.name
 output webAppDefaultHostname string = webApp.outputs.defaultHostname
 output appInsightsName string = appInsights.outputs.name
+output foundryName string = enableAi ? foundry.outputs.name : ''
+output foundryEndpoint string = enableAi ? foundry.outputs.endpoint : ''
